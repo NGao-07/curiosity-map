@@ -1,15 +1,30 @@
-// js/map_setup.js
-let map; // 将map声明为全局或在模块间传递
+// js/map_setup_amap.js
+let map; // 全局地图实例
+let toolbar, scaleControl; // 地图插件 (scaleControl 避免与 Leaflet 的 scale 混淆)
 
 function initMap() {
-    map = L.map('map').setView([35.8617, 104.1954], 5); // 默认中国中心
+    map = new AMap.Map('map', {
+        viewMode: '2D',
+        zoom: 5,
+        center: [104.1954, 35.8617], // 经度, 纬度
+    });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    map.plugin(["AMap.ToolBar", "AMap.Scale"], function () {
+        toolbar = new AMap.ToolBar({
+            position: {
+                top: '80px', // 调整位置，避免与header重叠
+                left: '20px'
+            }
+        });
+        map.addControl(toolbar);
 
-    // (可选) 添加其他地图控件，如比例尺
-    L.control.scale({ imperial: false }).addTo(map);
+        scaleControl = new AMap.Scale();
+        map.addControl(scaleControl);
+    });
+
+    map.on('complete', function(){
+        console.log("高德地图加载完成！");
+    });
 
     return map;
 }

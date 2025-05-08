@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>奇闻异事探索地图</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <title>奇闻异事探索地图 (高德版)</title>
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- 1. 设置高德地图安全密钥 (必须在加载JS API之前) -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: 'f5015b154428d04000e8e0b87f2506a6' // 你的安全密钥
+        }
+    </script>
+    <!-- 2. 异步加载高德地图 JS API V2.0 -->
+    <script type="text/javascript"
+            src="https://webapi.amap.com/maps?v=2.0&key=c4f4493f22622bf00570391d38651595&plugin=AMap.Scale,AMap.ToolBar,AMap.Geolocation,AMap.AutoComplete,AMap.PlaceSearch">
+    </script>
 </head>
 <body>
     <header class="map-header">
@@ -15,28 +25,27 @@
                 <label for="category-filter">筛选分类：</label>
                 <select id="category-filter">
                     <option value="all">所有分类</option>
-                    <!-- 分类选项将由JS动态添加 -->
                 </select>
             </div>
             <div class="search-container">
                 <input type="text" id="search-input" placeholder="搜索地点或奇闻...">
-                <button id="search-button">搜索</button>
+                <button id="search-button-custom">搜索</button>
             </div>
              <button id="locate-me-button" title="显示我附近奇闻">📍</button>
         </div>
     </header>
 
     <div id="map"></div>
+    <div id="panel"></div>
 
-    <!-- 引入 Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- 引入模块化 JS -->
+
+    <!-- 引入模块化 JS (顺序很重要) -->
     <script src="js/data.js"></script>
     <script src="js/map_setup.js"></script>
     <script src="js/markers.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/search.js"></script>
     <script src="js/user_location.js"></script>
-    <script src="js/main.js"></script> <!-- 主入口/协调文件 -->
+    <script src="js/main.js"></script>
 </body>
 </html>

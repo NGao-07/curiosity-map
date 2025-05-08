@@ -2,14 +2,14 @@
 const curiositiesData = [
     {
         id: "beijing_gugong", // 唯一ID，方便管理
-        lat: 39.9042,
-        lng: 116.4074,
+        lat: 39.9042, // 纬度
+        lng: 116.4074, // 经度
         title: "北京故宫的神秘传说",
         category: "历史", // 分类
         tags: ["北京", "故宫", "传说", "宫廷"], // 关键词标签，用于搜索
         description: "故宫，旧称紫禁城，是中国明清两代的皇家宫殿，这里流传着许多不为人知的宫闱秘事和传说。",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Forbidden_City_Beijing_Shenwumen_Gate_2013_PD.jpg/640px-Forbidden_City_Beijing_Shenwumen_Gate_2013_PD.jpg",
-        douyinLink: "https://www.douyin.com/your_video_id_1"
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Forbidden_City_Beijing_Shenwumen_Gate_2013_PD.jpg/640px-Forbidden_City_Beijing_Shenwumen_Gate_2013_PD.jpg", // 可选，替换为你的图片链接
+        douyinLink: "https://www.douyin.com/your_video_id_1" // 替换为你的抖音视频链接
     },
     {
         id: "shanghai_waitan",
@@ -36,7 +36,7 @@ const curiositiesData = [
     {
         id: "chengdu_panda",
         lat: 30.6590,
-        lng: 104.0660, // 大概位置，可以更精确
+        lng: 104.0660,
         title: "成都大熊猫的搞笑日常",
         category: "搞笑",
         tags: ["成都", "熊猫", "动物", "可爱"],

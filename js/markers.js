@@ -1,60 +1,78 @@
-// js/markers.js
-let currentMarkers = []; // 用于存储当前地图上的标记
+// js/markers_amap.js
+let currentMarkers = [];
+let currentOpenInfoWindow = null; // 只允许一个信息窗体打开
 
 function clearMarkers() {
-    currentMarkers.forEach(marker => map.removeLayer(marker));
+    if (map) {
+        map.remove(currentMarkers);
+    }
     currentMarkers = [];
+    if (currentOpenInfoWindow) {
+        currentOpenInfoWindow.close();
+        currentOpenInfoWindow = null;
+    }
 }
 
 function addMarkersToMap(dataArray) {
-    clearMarkers(); // 添加新标记前清除旧的
+    clearMarkers();
 
     dataArray.forEach(function(curiosity) {
-        const marker = L.marker([curiosity.lat, curiosity.lng]).addTo(map);
+        const position = new AMap.LngLat(curiosity.lng, curiosity.lat);
 
-        // 构建弹窗内容
-        let popupContent = `
+        const marker = new AMap.Marker({
+            position: position,
+            // title: curiosity.title // 可选，鼠标悬停提示
+        });
+
+        let popupContentHTML = `
             <div class="popup-content-container">
-                <h3 class="popup-title">${curiosity.title}</h3>
-        `;
-
+                <h3 class="popup-title">${curiosity.title}</h3>`;
         if (curiosity.imageUrl) {
-            popupContent += `<img src="${curiosity.imageUrl}" alt="${curiosity.title}" class="popup-image">`;
+            popupContentHTML += `<img src="${curiosity.imageUrl}" alt="${curiosity.title}" class="popup-image">`;
         }
-
-        popupContent += `<p class="popup-description">${curiosity.description}</p>`;
-
+        popupContentHTML += `<p class="popup-description">${curiosity.description}</p>`;
         if (curiosity.douyinLink) {
-            popupContent += `<a href="${curiosity.douyinLink}" target="_blank" class="popup-link">观看抖音视频</a>`;
+            popupContentHTML += `<a href="${curiosity.douyinLink}" target="_blank" class="popup-link">观看抖音视频</a>`;
         }
-
-        // 占位：用户评论和点赞 (需要后端支持)
-        popupContent += `
+        popupContentHTML += `
             <div class="popup-actions">
                 <button onclick="handleLike('${curiosity.id}')">👍 赞 (<span id="like-count-${curiosity.id}">0</span>)</button>
                 <button onclick="showComments('${curiosity.id}')">💬 评论</button>
             </div>
         </div>`;
 
-
-        marker.bindPopup(popupContent);
+        marker.on('click', function () {
+            if (currentOpenInfoWindow) {
+                currentOpenInfoWindow.close();
+            }
+            const infoWindow = new AMap.InfoWindow({
+                content: popupContentHTML,
+                offset: new AMap.Pixel(0, -30),
+                // closeWhenClickMap: true, // 点击地图空白区域时关闭信息窗体
+            });
+            infoWindow.open(map, marker.getPosition());
+            currentOpenInfoWindow = infoWindow;
+        });
         currentMarkers.push(marker);
     });
+
+    if (map) {
+        map.add(currentMarkers);
+        if (currentMarkers.length > 0 && dataArray.length === curiositiesData.length) {
+             // 初始加载时，如果数据较多，可以不自动fitView，让用户自行探索
+             // map.setFitView();
+        } else if (currentMarkers.length > 0) {
+            map.setFitView(currentMarkers, false, [150, 60, 150, 60]); // (markers, immediately, margins)
+        }
+    }
 }
 
-// --- 占位函数，实际功能需要后端 ---
 function handleLike(curiosityId) {
     console.log("点赞了: ", curiosityId);
-    // 实际应用中，这里会发送请求到后端记录点赞
-    // 然后更新前端的点赞数，例如:
-    // const likeCountSpan = document.getElementById(`like-count-${curiosityId}`);
-    // likeCountSpan.textContent = parseInt(likeCountSpan.textContent) + 1;
     alert(`感谢对 "${curiosityId}" 的点赞！(此功能为演示)`);
 }
 
 function showComments(curiosityId) {
     console.log("查看评论: ", curiosityId);
-    // 实际应用中，这里会加载并显示评论区
     alert(`查看 "${curiosityId}" 的评论！(此功能为演示)`);
 }
-// --- 占位函数结束 ---

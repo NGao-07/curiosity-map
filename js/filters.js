@@ -1,6 +1,13 @@
-// js/filters.js
+// js/filters_amap.js
 function populateCategoryFilter() {
     const filterSelect = document.getElementById('category-filter');
+    if (!filterSelect) return;
+
+    // 清空旧的选项，除了"所有分类"
+    while (filterSelect.options.length > 1) {
+        filterSelect.remove(1);
+    }
+
     allCategories.forEach(category => {
         const option = document.createElement('option');
         option.value = category;
