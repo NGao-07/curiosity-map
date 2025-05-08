@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奇闻异事探索地图</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="map-header">
+        <h1>奇闻异事探索地图</h1>
+        <div class="controls">
+            <div class="filter-container">
+                <label for="category-filter">筛选分类：</label>
+                <select id="category-filter">
+                    <option value="all">所有分类</option>
+                    <!-- 分类选项将由JS动态添加 -->
+                </select>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="搜索地点或奇闻...">
+                <button id="search-button">搜索</button>
+            </div>
+             <button id="locate-me-button" title="显示我附近奇闻">📍</button>
+        </div>
+    </header>
+
+    <div id="map"></div>
+
+    <!-- 引入 Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- 引入模块化 JS -->
+    <script src="js/data.js"></script>
+    <script src="js/map_setup.js"></script>
+    <script src="js/markers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/user_location.js"></script>
+    <script src="js/main.js"></script> <!-- 主入口/协调文件 -->
+</body>
+</html>
